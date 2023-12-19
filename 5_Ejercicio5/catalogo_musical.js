@@ -13,36 +13,40 @@ function crearCatalogo() {
         canciones.push(cancion)
     }
 
-    const listarCanciones = () => {
+    const listarCanciones = (cancionesList = canciones) => {
         let string =''
         let listado = () => {
-            canciones.forEach(({nombre, genero, duracion}) => string += (`${nombre} - ${genero} - Duración ${duracion}\n`))
+            cancionesList.forEach(({nombre, genero, duracion}) => string += (`${nombre} - ${genero} - Duración ${duracion}\n`))
             }
         listado()
         return (canciones.length === 0 ? 'No hay canciones' : string)
+    
+        }
+    
+    const buscarPorGenero = (genero) => {
+        resultado = canciones.filter(cancion => cancion.genero === genero)
+        let listadoPorGenero = listarCanciones(resultado)
+        return listadoPorGenero
     }
 
     return {
         agregarCancion,
-        listarCanciones
+        listarCanciones,
+        buscarPorGenero,
+
 
     }
-
 }
 
 let mi_catalogo = crearCatalogo();
-mi_catalogo.agregarCancion('cancion1', 'elgenero', '20:00:00')
-mi_catalogo.agregarCancion('cancion2', 'elgenero', '20:00:00')
+mi_catalogo.agregarCancion('cancion1', 'elgenero1', '20:00:00')
+mi_catalogo.agregarCancion('cancion2', 'elgenero2', '20:00:00')
+
 
 console.log(mi_catalogo.listarCanciones())
+console.log(mi_catalogo.buscarPorGenero('elgenero1'))
 
-    //Agregar cancion con push
-
-    // Listar canciones (intentar con map))
-
-    // Buscar canciones por genero (filter)
-
-    // Calcular promedio (reduce)
+    // Calcular promedio (con reduce)
 
     
 
