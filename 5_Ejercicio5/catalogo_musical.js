@@ -67,8 +67,9 @@ function crearCatalogo() {
         while (genero<0 || genero>=generos.length || isNaN(parseInt(genero))){
             genero = prompt('FILTRAR POR GÉNERO: \n Introduce el número asociado al género \n Ejemplo para filtrar por género Jazz introduce 0 \n' + getGenerosList())
         }
-        let resultado = canciones.filter(cancion => cancion.generos === genero)
-        let title = `Lista de canciones - Filtro por género: ${generos[parseInt(genero)]}\n`
+        let resultado = canciones.filter(cancion => cancion.genero === genero)
+        console.log(resultado)
+        let title = `Lista de canciones filtradas por género: ${generos[parseInt(genero)]}\n`
         let listadoPorGenero = listarCanciones(resultado, title)
         return (resultado.length === 0 ? title + '\nEn el catálogo no hay canciones de este género' :listadoPorGenero)
     }
@@ -81,14 +82,15 @@ function crearCatalogo() {
                 const sec = parseFloat(hhmmss[2],10)
 
                 const segundosTotales = horas*3600 + min*60 + sec
-
+                
                 return acum + segundosTotales
 
             },0)
             promedio = duracionTotal/canciones.length
-            stringPromedio = (Math.floor(promedio/3600)).toString().padStart(2,'0') +':'+
-                             (Math.floor((promedio%3600)/60)).toString().padStart(2,'0') +':'+
-                             (Math.floor(promedio%60)).toString().padStart(2,'0')
+            stringPromedio = 'Duración promedio del catálogo:\n'+
+                            (Math.floor(promedio/3600)).toString().padStart(2,'0') +':'+
+                            (Math.floor((promedio%3600)/60)).toString().padStart(2,'0') +':'+
+                            (Math.floor(promedio%60)).toString().padStart(2,'0')
         
         
         return stringPromedio
@@ -102,17 +104,6 @@ function crearCatalogo() {
         calcularPormedioDuracion,
     }
 }
-
-let mi_catalogo = crearCatalogo();
-mi_catalogo.agregarCancion()
-mi_catalogo.agregarCancion('Cancion2', '13', '1:3:4')
-mi_catalogo.agregarCancion('Cancion3', '13', '02:00:20')
-mi_catalogo.agregarCancion('Cancion3', '11', '1:00:20')
-
-console.log(mi_catalogo.listarCanciones())
-
-console.log(mi_catalogo.buscarPorGenero())
-console.log(mi_catalogo.calcularPormedioDuracion())
 
     
 
