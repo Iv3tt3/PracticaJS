@@ -1,0 +1,1 @@
+const randomPoint = Math.floor(Math.random() * 2) + 1;
