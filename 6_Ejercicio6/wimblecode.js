@@ -18,6 +18,8 @@ function createMatch (player1, player2) {
     }
 
     const players = [createPlayers(player1), createPlayers(player2)]
+    string = `${players[0].name} ${players[0].points} - ${players[1].points} ${players[1].name}`
+
     
     const uploadGameScore = (player) => {
         if (player.rounds > 3 && Math.abs(players[0].rounds - players[1].rounds)>=2){
@@ -60,7 +62,7 @@ function createMatch (player1, player2) {
                 deuce = true
                 string = "Deuce"
             }
-        } else if (players.points === 'win'){
+        } else if (player.points === 'win'){
             uploadRoundWinner(player)
         }
     }
@@ -100,6 +102,7 @@ function WimbleCode (player1, player2, player3, player4) {
     const match1 = createMatch(player1, player2)
     const match2 = createMatch(player3, player4)
     let match3 = null
+    let string = 'Playing Match'
 
     const getMatchWinners = () => {
         return new Promise ((resolve, reject) => {
@@ -125,29 +128,32 @@ function WimbleCode (player1, player2, player3, player4) {
 
     const getCurrentRoundScore = () => {
         if(isFinalMatch){
-            'Final Match:' + match3.getCurrentRoundScore() + '\n'
-        }else{
-            'Match1:' + match1.getCurrentRoundScore() + '\n'
-            'Match2:' + match2.getCurrentRoundScore()
+            string = 'Final Match:' + match3.getCurrentRoundScore() + '\n'
+        }else{string = '\n'
+            + 'Match1:' + match1.getCurrentRoundScore() + '\n'
+            + 'Match2:' + match2.getCurrentRoundScore()
         }
+        return string
     }
 
     const getRoundScore = () => {
         if(isFinalMatch){
-            'Final Match:' + match3.getRoundScore() + '\n'
-        }else{
-            'Match1:' + match1.getRoundScore() + '\n'
-            'Match2:' + match2.getRoundScore()
+            string = 'Final Match:' + match3.getRoundScore() + '\n'
+        }else{string = '\n'
+            + 'Match1:' + match1.getRoundScore() + '\n'
+            + 'Match2:' + match2.getRoundScore()
         }
+        return string
     }
 
     const getMatchScore = () => {
         if(isFinalMatch){
-            'Final Match:' + match3.getMatchScore() + '\n'
-        }else{
-            'Match1:' + match1.getMatchScore() + '\n'
-            'Match2:' + match2.getMatchScore()
+            string = 'Final Match:' + match3.getMatchScore() + '\n'
+        }else{string = '\n'
+            + 'Match1:' + match1.getMatchScore() + '\n'
+            + 'Match2:' + match2.getMatchScore()
         }
+        return string
     }
 
     const getWinner = () => {
@@ -157,5 +163,5 @@ function WimbleCode (player1, player2, player3, player4) {
         return tournementWinner
     }
 
-    return {getCurrentRoundScore,getRoundScore,getMatchScore,getWinner}
+    return {match1, match2, match3, getCurrentRoundScore,getRoundScore,getMatchScore,getWinner}
 }
