@@ -68,20 +68,23 @@ function createMatch (player1, player2) {
     }
 
     const pointWonBy = (num)=> {
-        if (nextRound){
-            console.log('\nNEXT ROUND')
-            nextRound = false
+        if (winner === null) { 
+            if (nextRound){
+                console.log('\nNEXT ROUND')
+                nextRound = false
+            }
+            let playerPos = num-1
+            if (deuce){
+                players[playerPos].advantage += 1
+            } else {
+                players[playerPos].pointsPos += 1
+                players[playerPos].points = points[players[playerPos].pointsPos]
+                string = `${players[0].name} ${players[0].points} - ${players[1].points} ${players[1].name}`
+            }
+            uploadScores(players[playerPos]) 
+            console.log(getCurrentRoundScore())
         }
-        let playerPos = num-1
-        if (deuce){
-            players[playerPos].advantage += 1
-        } else {
-            players[playerPos].pointsPos += 1
-            players[playerPos].points = points[players[playerPos].pointsPos]
-            string = `${players[0].name} ${players[0].points} - ${players[1].points} ${players[1].name}`
-        }
-        uploadScores(players[playerPos]) 
-        console.log(getCurrentRoundScore())
+        else {console.log(`The mach ends. Winner is ${winner}`)}
     }
 
     const getCurrentRoundScore = () => string
@@ -101,19 +104,20 @@ function WimbleCode (player1, player2, player3, player4) {
     let isFinalMatch = false;
     const match1 = createMatch(player1, player2)
     const match2 = createMatch(player3, player4)
-    let match3 = null
+    let match3 = async function () {
+        match3 = await getMatchWinners();
+    }
     let string = 'Playing Match'
 
     const getMatchWinners = () => {
         return new Promise ((resolve, reject) => {
             const checkWinners = () => {
                 // Check if match 1 and 2 end, so winner !== null
-                if (match1.winner !== null || match2.winner !== null){
-                    resolve([match1.getWinner(), match2.getWinner()]);
-                    finalMatch();
-                // if not ended, check again after 1 minut --> loop until winners
+                if (match1.getWinner() !== null || match2.getWinner() !== null){
+                    resolve(createMatch(match1.getWinner(), match2.getWinner()));
+                    // if not ended, check again after 1 minut --> loop until winners
                 } else {
-                    setTimeout(checkWinners, 60000);
+                    setTimeout(checkWinners);
                 }
             };
 
@@ -121,10 +125,7 @@ function WimbleCode (player1, player2, player3, player4) {
         });
     };
 
-    async function finalMatch() {
-        const winners = await getMatchWinners();
-        match3 = createMatch(winners)
-    }
+    
 
     const getCurrentRoundScore = () => {
         if(isFinalMatch){
@@ -163,5 +164,5 @@ function WimbleCode (player1, player2, player3, player4) {
         return tournementWinner
     }
 
-    return {match1, match2, match3, getCurrentRoundScore,getRoundScore,getMatchScore,getWinner}
+    return {match1, match2, match3, getMatchWinners, getCurrentRoundScore,getRoundScore,getMatchScore,getWinner}
 }
