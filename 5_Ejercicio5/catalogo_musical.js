@@ -46,7 +46,7 @@ function crearCatalogo() {
         
         let cancion = {
             nombre,
-            generos,
+            genero,
             duracion
         };
         canciones.push(cancion)
@@ -67,9 +67,10 @@ function crearCatalogo() {
         while (genero<0 || genero>=generos.length || isNaN(parseInt(genero))){
             genero = prompt('FILTRAR POR GÉNERO: \n Introduce el número asociado al género \n Ejemplo para filtrar por género Jazz introduce 0 \n' + getGenerosList())
         }
-        let resultado = canciones.filter(cancion => cancion.genero === genero)
-        let listadoPorGenero = listarCanciones(resultado, `Lista de canciones - Filtro por género: ${genero}\n`)
-        return (resultado.length === 0 ? 'En el catálogo no hay canciones de este género' :listadoPorGenero)
+        let resultado = canciones.filter(cancion => cancion.generos === genero)
+        let title = `Lista de canciones - Filtro por género: ${generos[parseInt(genero)]}\n`
+        let listadoPorGenero = listarCanciones(resultado, title)
+        return (resultado.length === 0 ? title + '\nEn el catálogo no hay canciones de este género' :listadoPorGenero)
     }
 
     const calcularPormedioDuracion = () => {
