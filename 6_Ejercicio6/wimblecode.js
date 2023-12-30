@@ -95,7 +95,7 @@ function createMatch (player1, player2) {
 
     const getWinner = () => winner
     
-    return {pointWonBy, getCurrentRoundScore, getRoundScore, getMatchScore, getWinner}
+    return {players, pointWonBy, getCurrentRoundScore, getRoundScore, getMatchScore, getWinner}
 }
 
 
@@ -104,32 +104,27 @@ function WimbleCode (player1, player2, player3, player4) {
     let isFinalMatch = false;
     const match1 = createMatch(player1, player2)
     const match2 = createMatch(player3, player4)
-    let match3 = async function () {
-        match3 = await getMatchWinners();
-    }
-    let string = 'Playing Match'
 
-    const getMatchWinners = () => {
-        return new Promise ((resolve, reject) => {
-            const checkWinners = () => {
-                // Check if match 1 and 2 end, so winner !== null
-                if (match1.getWinner() !== null || match2.getWinner() !== null){
-                    resolve(createMatch(match1.getWinner(), match2.getWinner()));
-                    // if not ended, check again after 1 minut --> loop until winners
-                } else {
-                    setTimeout(checkWinners);
-                }
-            };
+    const pointWonBy = (num) => {
+        if (match1.getWinner() === null || match2.getWinner() === null){
+            string = "partido no iniciado"
+        }else if (isFinalMatch === false) {
+            match3 = createMatch(match1.getWinner(), match2.getWinner());
+            match3.pointWonBy(num)
+            isFinalMatch = true
+        }       
+        
 
-            checkWinners();
-        });
+        return string
     };
 
-    
-
+    let match3 = {pointWonBy}
+    let string = ''
+   
     const getCurrentRoundScore = () => {
+        getWinner()
         if(isFinalMatch){
-            string = 'Final Match:' + match3.getCurrentRoundScore() + '\n'
+            string = 'Final Match: ' + match3.getCurrentRoundScore() + '\n'
         }else{string = '\n'
             + 'Match1:' + match1.getCurrentRoundScore() + '\n'
             + 'Match2:' + match2.getCurrentRoundScore()
@@ -138,8 +133,9 @@ function WimbleCode (player1, player2, player3, player4) {
     }
 
     const getRoundScore = () => {
+        getWinner()
         if(isFinalMatch){
-            string = 'Final Match:' + match3.getRoundScore() + '\n'
+            string = 'Final Match: ' + match3.getRoundScore() + '\n'
         }else{string = '\n'
             + 'Match1:' + match1.getRoundScore() + '\n'
             + 'Match2:' + match2.getRoundScore()
@@ -148,8 +144,9 @@ function WimbleCode (player1, player2, player3, player4) {
     }
 
     const getMatchScore = () => {
+        getWinner()
         if(isFinalMatch){
-            string = 'Final Match:' + match3.getMatchScore() + '\n'
+            string = 'Final Match: ' + match3.getMatchScore() + '\n'
         }else{string = '\n'
             + 'Match1:' + match1.getMatchScore() + '\n'
             + 'Match2:' + match2.getMatchScore()
@@ -157,12 +154,8 @@ function WimbleCode (player1, player2, player3, player4) {
         return string
     }
 
-    const getWinner = () => {
-        if (isFinalMatch){
-            tournementWinner = match3.winner
-        }
-        return tournementWinner
-    }
+    const getWinner = () => tournementWinner
 
-    return {match1, match2, match3, getMatchWinners, getCurrentRoundScore,getRoundScore,getMatchScore,getWinner}
+
+    return {match1, match2, match3, isFinalMatch, getCurrentRoundScore,getRoundScore,getMatchScore,getWinner}
 }

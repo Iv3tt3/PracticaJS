@@ -1,4 +1,4 @@
-const randomPoint = Math.floor(Math.random() * 2) + 1;
+//const randomPoint = Math.floor(Math.random() * 2) + 1;
 
 const torn = WimbleCode('Alberto', 'David', 'Edu', 'Juan')
 
@@ -160,11 +160,13 @@ torn.match2.pointWonBy(1)
 torn.match2.pointWonBy(1)
 torn.match2.pointWonBy(1) // Edu win - 0 Juan
 
+
 console.log(`\nCHECK TOURNAMENT STATUS`)
+console.log(torn.match3.pointWonBy(1))
 console.log('getCurrentRoundScore() :', torn.getCurrentRoundScore())
 console.log('getRoundScore() :',torn.getRoundScore())
 console.log('getMatchScore() :',torn.getMatchScore())
 console.log('getWinner() :',torn.getWinner())
+console.log(torn.match3)
 
-
-console.log(torn.match3())
+console.log(torn.match3.pointWonBy(1))
