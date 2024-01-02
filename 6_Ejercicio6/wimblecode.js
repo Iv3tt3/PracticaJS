@@ -1,3 +1,57 @@
+let jugadores = prompt('Introduce el numero de jugadores del torneo:\nMínimo 4 jugadores. El número debe ser potencia de 2 (Ej: 4, 8, 16, 32, 64, etc.)')
+let n = Math.log2(jugadores); // Rondas que habrá son 2^n
+// Mientras n no sea un numero entero, volver a preguntar el numero de jugadores del torneo
+while (n%1 === 0){
+    n = prompt('El número no es válido. Introduce un número de jugadores potencia de 2. Mínimo 4 jugadores\n(Ej: 4, 8, 16, 32, 64, etc.)')
+}
+
+let tournamentPlayers = []
+let introduceNew = "SI"
+while (introduceNew === "SI"){
+    let player1 = ""
+    if (player1 === ""){
+        player1 = prompt('Introduce el nombre del jugador1:')
+    }
+    let player2 = ""
+    if (player2 === ""){
+        player2 = prompt('Introduce el nombre del jugador2:')
+    }
+    tournamentPlayers.push(player1)
+    tournamentPlayers.push(player2)
+    introduceNew = prompt('Quieres introducir dos jugadores más al torneo? (SI/NO)').toUpperCase()
+    while (introduceNew !== "SI" && introduceNew !== "NO")
+        introduceNew = prompt('Introduce "SI" o "NO" \nQuieres introducir dos jugadores más al torneo? (SI/NO)').toUpperCase()
+}
+
+function createPartners (...tournamentPlayers){
+    let games = []
+    let i=0
+    while (tournamentPlayers.length !== 0){
+        let match = createMatch(player0, player1)
+        games.push(match)
+        tournamentPlayers = tournamentPlayers.shift()
+        tournamentPlayers = tournamentPlayers.shift()
+    }
+    return games
+}
+
+let games = createPartners(tournamentPlayers)
+
+function wimbleCode (games){
+    let winner = null
+    const getWinner = () =>{
+        let matchPlaying = false
+        for (let i=0; i>games.length; i++){
+            if (games[i].getWinner === null){
+                matchPlaying = true
+            }
+        }
+    }
+}
+
+
+
+
 function createMatch (player1, player2) {
     let winner = null
     const points = [0, 15, 30, 40, 'win'];
@@ -96,66 +150,4 @@ function createMatch (player1, player2) {
     const getWinner = () => winner
     
     return {players, pointWonBy, getCurrentRoundScore, getRoundScore, getMatchScore, getWinner}
-}
-
-
-function WimbleCode (player1, player2, player3, player4) {
-    let tournementWinner = null;
-    let isFinalMatch = false;
-    const match1 = createMatch(player1, player2)
-    const match2 = createMatch(player3, player4)
-
-    const pointWonBy = (num) => {
-        if (match1.getWinner() === null || match2.getWinner() === null){
-            string = "partido no iniciado"
-        }else if (isFinalMatch === false) {
-            match3 = createMatch(match1.getWinner(), match2.getWinner());
-            match3.pointWonBy(num)
-            isFinalMatch = true
-        }       
-        
-
-        return string
-    };
-
-    let match3 = {pointWonBy}
-    let string = ''
-   
-    const getCurrentRoundScore = () => {
-        getWinner()
-        if(isFinalMatch){
-            string = 'Final Match: ' + match3.getCurrentRoundScore() + '\n'
-        }else{string = '\n'
-            + 'Match1:' + match1.getCurrentRoundScore() + '\n'
-            + 'Match2:' + match2.getCurrentRoundScore()
-        }
-        return string
-    }
-
-    const getRoundScore = () => {
-        getWinner()
-        if(isFinalMatch){
-            string = 'Final Match: ' + match3.getRoundScore() + '\n'
-        }else{string = '\n'
-            + 'Match1:' + match1.getRoundScore() + '\n'
-            + 'Match2:' + match2.getRoundScore()
-        }
-        return string
-    }
-
-    const getMatchScore = () => {
-        getWinner()
-        if(isFinalMatch){
-            string = 'Final Match: ' + match3.getMatchScore() + '\n'
-        }else{string = '\n'
-            + 'Match1:' + match1.getMatchScore() + '\n'
-            + 'Match2:' + match2.getMatchScore()
-        }
-        return string
-    }
-
-    const getWinner = () => tournementWinner
-
-
-    return {match1, match2, match3, isFinalMatch, getCurrentRoundScore,getRoundScore,getMatchScore,getWinner}
 }
