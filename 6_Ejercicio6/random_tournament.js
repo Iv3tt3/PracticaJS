@@ -1,4 +1,4 @@
-//const randomPoint = Math.floor(Math.random() * 2) + 1;
+/* //const randomPoint = Math.floor(Math.random() * 2) + 1;
 
 const torn = WimbleCode('Alberto', 'David', 'Edu', 'Juan')
 
@@ -170,3 +170,18 @@ console.log('getWinner() :',torn.getWinner())
 console.log(torn.match3)
 
 console.log(torn.match3.pointWonBy(1))
+*/
+
+for (let i=0; i<games.length; i++){
+    let match = games[i]
+    while (match.getWinner() === null){
+        const randomPoint = Math.floor(Math.random() * 2) + 1
+        match.pointWonBy(randomPoint)
+    }
+    console.log(`\nCHECK CURRENT MATCH STATUS`)
+    console.log('getCurrentRoundScore() :', match.getCurrentRoundScore())
+    console.log('getRoundScore() :',match.getRoundScore())
+    console.log('getMatchScore() :',match.getMatchScore())
+    console.log('getWinner() :',match.getWinner())
+
+}

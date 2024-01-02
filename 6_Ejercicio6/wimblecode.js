@@ -1,56 +1,59 @@
-let jugadores = prompt('Introduce el numero de jugadores del torneo:\nMínimo 4 jugadores. El número debe ser potencia de 2 (Ej: 4, 8, 16, 32, 64, etc.)')
-let n = Math.log2(jugadores); // Rondas que habrá son 2^n
-// Mientras n no sea un numero entero, volver a preguntar el numero de jugadores del torneo
-while (n%1 === 0){
+let players = 4//prompt('Introduce el numero de jugadores del torneo:\nMínimo 4 jugadores. El número debe ser potencia de 2 (Ej: 4, 8, 16, 32, 64, etc.)')
+// Mientras el numero no sea una potencia de numero entero, volver a preguntar el numero de jugadores del torneo
+while (Math.log2(players)%1 !== 0){
     n = prompt('El número no es válido. Introduce un número de jugadores potencia de 2. Mínimo 4 jugadores\n(Ej: 4, 8, 16, 32, 64, etc.)')
 }
 
-let tournamentPlayers = []
-let introduceNew = "SI"
-while (introduceNew === "SI"){
-    let player1 = ""
-    if (player1 === ""){
-        player1 = prompt('Introduce el nombre del jugador1:')
+let playerNames = ["Jose"]
+while (playerNames.length !== players){
+    let i = playerNames.length + 1
+    let player = "Alberto"
+    while (player === ""){
+        player = prompt(`Introduce el nombre del jugador ${i}:`)
     }
-    let player2 = ""
-    if (player2 === ""){
-        player2 = prompt('Introduce el nombre del jugador2:')
-    }
-    tournamentPlayers.push(player1)
-    tournamentPlayers.push(player2)
-    introduceNew = prompt('Quieres introducir dos jugadores más al torneo? (SI/NO)').toUpperCase()
-    while (introduceNew !== "SI" && introduceNew !== "NO")
-        introduceNew = prompt('Introduce "SI" o "NO" \nQuieres introducir dos jugadores más al torneo? (SI/NO)').toUpperCase()
+    playerNames.push(player)
 }
 
-function createPartners (...tournamentPlayers){
+function createPartners (players){
     let games = []
     let i=0
-    while (tournamentPlayers.length !== 0){
-        let match = createMatch(player0, player1)
+    while (players !== undefined){
+        let match = createMatch(players[0], players[1])
         games.push(match)
-        tournamentPlayers = tournamentPlayers.shift()
-        tournamentPlayers = tournamentPlayers.shift()
+        players = players.shift
+        players = players.shift
     }
     return games
 }
 
-let games = createPartners(tournamentPlayers)
+let games = createPartners(playerNames)
 
 function wimbleCode (games){
     let winner = null
-    const getWinner = () =>{
+    const getWinner = () => {
+        console.log(games)
+        let gamesWinners = []
         let matchPlaying = false
-        for (let i=0; i>games.length; i++){
-            if (games[i].getWinner === null){
+        for (let i=0; i<games.length; i++){
+            if (games[i].getWinner() === null){
                 matchPlaying = true
-            }
-        }
+            gamesWinners.push(games[i].getWinner())
+        }}
+        if (!matchPlaying && gamesWinners.length > 1) {
+            console.log(`Nueva ronda. Los ganadores de los partidos anteriores son ${gamesWinners.join(" , ")}`)
+            games = createPartners(gamesWinners)
+
+        } else if (gamesWinners.length === 1 && gamesWinners[0] !== null){
+            winner = gamesWinners.join()
+            console.log(`El ganador del torneo es ${winner}`)
+        } else{console.log(`El torneo se está jugando`)}
+        return winner
     }
+
+    return {getWinner}
 }
 
-
-
+let torn = wimbleCode(games)
 
 function createMatch (player1, player2) {
     let winner = null
