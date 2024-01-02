@@ -1,10 +1,11 @@
 let players = 4//prompt('Introduce el numero de jugadores del torneo:\nMínimo 4 jugadores. El número debe ser potencia de 2 (Ej: 4, 8, 16, 32, 64, etc.)')
 // Mientras el numero no sea una potencia de numero entero, volver a preguntar el numero de jugadores del torneo
-while (Math.log2(players)%1 !== 0){
-    n = prompt('El número no es válido. Introduce un número de jugadores potencia de 2. Mínimo 4 jugadores\n(Ej: 4, 8, 16, 32, 64, etc.)')
+const torunamentRounds = Math.log2(players)
+while (torunamentRounds%1 !== 0){
+    players = prompt('El número no es válido. Introduce un número de jugadores potencia de 2. Mínimo 4 jugadores\n(Ej: 4, 8, 16, 32, 64, etc.)')
 }
 
-let playerNames = ["Jose"]
+let playerNames = ["Jose", "Sonia", "Ona"]
 while (playerNames.length !== players){
     let i = playerNames.length + 1
     let player = "Alberto"
@@ -17,11 +18,11 @@ while (playerNames.length !== players){
 function createPartners (players){
     let games = []
     let i=0
-    while (players !== undefined){
+    while (players.length !== 0){
         let match = createMatch(players[0], players[1])
         games.push(match)
-        players = players.shift
-        players = players.shift
+        players.shift()
+        players.shift()
     }
     return games
 }
@@ -37,8 +38,9 @@ function wimbleCode (games){
         for (let i=0; i<games.length; i++){
             if (games[i].getWinner() === null){
                 matchPlaying = true
+            }
             gamesWinners.push(games[i].getWinner())
-        }}
+        }
         if (!matchPlaying && gamesWinners.length > 1) {
             console.log(`Nueva ronda. Los ganadores de los partidos anteriores son ${gamesWinners.join(" , ")}`)
             games = createPartners(gamesWinners)
@@ -52,8 +54,6 @@ function wimbleCode (games){
 
     return {getWinner}
 }
-
-let torn = wimbleCode(games)
 
 function createMatch (player1, player2) {
     let winner = null

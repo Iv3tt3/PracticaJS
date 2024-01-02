@@ -172,16 +172,20 @@ console.log(torn.match3)
 console.log(torn.match3.pointWonBy(1))
 */
 
-for (let i=0; i<games.length; i++){
-    let match = games[i]
-    while (match.getWinner() === null){
-        const randomPoint = Math.floor(Math.random() * 2) + 1
-        match.pointWonBy(randomPoint)
+for (let i=0; i<torunamentRounds; i++){
+    console.log(games)
+    for (let i=0; i<games.length; i++){
+        console.log(`_________MATCH ${i} STARTS_________`)
+        let match = games[i]
+        randomMatch(match)
     }
-    console.log(`\nCHECK CURRENT MATCH STATUS`)
-    console.log('getCurrentRoundScore() :', match.getCurrentRoundScore())
-    console.log('getRoundScore() :',match.getRoundScore())
-    console.log('getMatchScore() :',match.getMatchScore())
-    console.log('getWinner() :',match.getWinner())
+    
+    function randomMatch(match) {
+        while (match.getWinner() === null){
+            const randomPoint = Math.floor(Math.random() * 2) + 1
+            match.pointWonBy(randomPoint)
+        }
+    }
+    console.log(games)
 
 }
