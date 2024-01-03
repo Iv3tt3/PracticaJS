@@ -1,14 +1,14 @@
-let players = 4//prompt('Introduce el numero de jugadores del torneo:\nMínimo 4 jugadores. El número debe ser potencia de 2 (Ej: 4, 8, 16, 32, 64, etc.)')
+let players = parseInt(prompt('Introduce el numero de jugadores del torneo:\nMínimo 4 jugadores. El número debe ser potencia de 2\n(Ej: 4, 8, 16, 32, 64, etc.)'))
 // Mientras el numero no sea una potencia de numero entero, volver a preguntar el numero de jugadores del torneo
 const torunamentRounds = Math.log2(players)
-while (torunamentRounds%1 !== 0){
+while (torunamentRounds%1 !== 0 && !Number.isInteger(players)){
     players = prompt('El número no es válido. Introduce un número de jugadores potencia de 2. Mínimo 4 jugadores\n(Ej: 4, 8, 16, 32, 64, etc.)')
 }
 
 let playerNames = ["Jose", "Sonia", "Ona"]
 while (playerNames.length !== players){
     let i = playerNames.length + 1
-    let player = "Alberto"
+    let player = ""
     while (player === ""){
         player = prompt(`Introduce el nombre del jugador ${i}:`)
     }
@@ -29,30 +29,24 @@ function createPartners (players){
 
 let games = createPartners(playerNames)
 
-function wimbleCode (games){
-    let winner = null
-    const getWinner = () => {
-        console.log(games)
-        let gamesWinners = []
-        let matchPlaying = false
-        for (let i=0; i<games.length; i++){
-            if (games[i].getWinner() === null){
-                matchPlaying = true
-            }
-            gamesWinners.push(games[i].getWinner())
+function newGamesWithWinners (games){
+    let gamesWinners = []
+    let matchPlaying = false
+    for (let i=0; i<games.length; i++){
+        if (games[i].getWinner() === null){
+            matchPlaying = true
         }
-        if (!matchPlaying && gamesWinners.length > 1) {
-            console.log(`Nueva ronda. Los ganadores de los partidos anteriores son ${gamesWinners.join(" , ")}`)
-            games = createPartners(gamesWinners)
-
-        } else if (gamesWinners.length === 1 && gamesWinners[0] !== null){
-            winner = gamesWinners.join()
-            console.log(`El ganador del torneo es ${winner}`)
-        } else{console.log(`El torneo se está jugando`)}
-        return winner
+        gamesWinners.push(games[i].getWinner())
     }
+    if (!matchPlaying && gamesWinners.length > 1) {
+        console.log(`Nueva ronda. Los ganadores de los partidos anteriores son ${gamesWinners.join(" , ")}`)
+        games = createPartners(gamesWinners)
 
-    return {getWinner}
+    } else if (gamesWinners.length === 1 && gamesWinners[0] !== null){
+        let winner = gamesWinners.join()
+        console.log(`El ganador del torneo es ${winner}`)
+    } else{console.log(`El torneo se está jugando`)}
+    return games
 }
 
 function createMatch (player1, player2) {
@@ -79,7 +73,12 @@ function createMatch (player1, player2) {
 
     
     const uploadGameScore = (player) => {
-        if (player.rounds > 3 && Math.abs(players[0].rounds - players[1].rounds)>=2){
+        if (players[0].rounds + players[1].rounds === 7){
+            (players[0].rounds > players[1].rounds ? player = players[0] : player = players[1])
+            player.games += 1
+            string += `\nGame Winner: ${player.name}`
+            players[0].rounds = players[1].rounds = 0
+        }else if (player.rounds > 3 && Math.abs(players[0].rounds - players[1].rounds)>=2){
             player.games += 1
             string += `\nGame Winner: ${player.name}`
             players[0].rounds = players[1].rounds = 0
