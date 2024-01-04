@@ -1,11 +1,12 @@
+// Se pide al usuario el nº de jugadores del torneo. Solo admite numero de jugadores potencia de 2 y comprueba que sea un entero
 let players = parseInt(prompt('Introduce el numero de jugadores del torneo:\nMínimo 4 jugadores. El número debe ser potencia de 2\n(Ej: 4, 8, 16, 32, 64, etc.)'))
-// Mientras el numero no sea una potencia de numero entero, volver a preguntar el numero de jugadores del torneo
 const torunamentRounds = Math.log2(players)
 while (torunamentRounds%1 !== 0 && !Number.isInteger(players)){
     players = prompt('El número no es válido. Introduce un número de jugadores potencia de 2. Mínimo 4 jugadores\n(Ej: 4, 8, 16, 32, 64, etc.)')
 }
 
-let playerNames = ["Jose", "Sonia", "Ona"]
+// Se pide el nombre de los jugadores. Se uas un índice para que el usuario diferencie los prompt 
+let playerNames = []
 while (playerNames.length !== players){
     let i = playerNames.length + 1
     let player = ""
@@ -15,9 +16,9 @@ while (playerNames.length !== players){
     playerNames.push(player)
 }
 
+// Función que crea los partidos, los añade en la lista games y la retorna
 function createPartners (players){
     let games = []
-    let i=0
     while (players.length !== 0){
         let match = createMatch(players[0], players[1])
         games.push(match)
@@ -27,8 +28,10 @@ function createPartners (players){
     return games
 }
 
+// Llamamos a la función y creamos los partidos 
 let games = createPartners(playerNames)
 
+// Función para las posteriores rondas del torneo, crea los partidos con los ganadores de la ronda anterior del torneo.
 function newGamesWithWinners (games){
     let gamesWinners = []
     let matchPlaying = false
@@ -49,6 +52,7 @@ function newGamesWithWinners (games){
     return games
 }
 
+// Función que crea el partido por parejas de jugadores
 function createMatch (player1, player2) {
     let winner = null
     const points = [0, 15, 30, 40, 'win'];
@@ -56,6 +60,7 @@ function createMatch (player1, player2) {
     let nextRound = false;
     let string = ""
     
+    //Función que crea el objeto jugador
     const createPlayers = (player) => {
         const obj = {
             name: player,
@@ -68,10 +73,11 @@ function createMatch (player1, player2) {
         return obj
     }
 
+    //Se crean las instancias del objeto con los jugadores del partido
     const players = [createPlayers(player1), createPlayers(player2)]
     string = `${players[0].name} ${players[0].points} - ${players[1].points} ${players[1].name}`
 
-    
+    //Función para actualizar si hay ganador del juego y del partido.
     const uploadGameScore = (player) => {
         if (players[0].rounds + players[1].rounds === 7){
             (players[0].rounds > players[1].rounds ? player = players[0] : player = players[1])
@@ -90,6 +96,7 @@ function createMatch (player1, player2) {
         }
     }  
 
+    //Función para anunciar el ganador de la ronda y reiniciar marcadores. Llama a la función anterior
     const uploadRoundWinner = (player) => {
         deuce = false
         nextRound = true
@@ -103,6 +110,7 @@ function createMatch (player1, player2) {
         uploadGameScore(player)
     }
 
+    // Función para actualizar los marcadores, anunciar si entran en Deuce o si hay un ganador de la ronda. Llama a la función anterior
     const uploadScores = (player) => {
         if (players[0].points === 40 && players[1].points === 40){
             if (deuce){
@@ -123,6 +131,7 @@ function createMatch (player1, player2) {
         }
     }
 
+    // Función para dar un punto al jugador, si están en deuce le da advantage. Llama a la función anterior y a la posterior
     const pointWonBy = (num)=> {
         if (winner === null) { 
             if (nextRound){
@@ -143,6 +152,8 @@ function createMatch (player1, player2) {
         else {console.log(`The mach ends. Winner is ${winner}`)}
     }
 
+    // Métodos para mostrar en consola el estado del partido, son las que retorna la función principal
+
     const getCurrentRoundScore = () => string
 
     const getRoundScore = () => `${players[0].name} ${players[0].rounds} - ${players[1].name} ${players[1].rounds} `
@@ -151,5 +162,5 @@ function createMatch (player1, player2) {
 
     const getWinner = () => winner
     
-    return {players, pointWonBy, getCurrentRoundScore, getRoundScore, getMatchScore, getWinner}
+    return {pointWonBy, getCurrentRoundScore, getRoundScore, getMatchScore, getWinner}
 }
