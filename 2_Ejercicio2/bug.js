@@ -1,6 +1,6 @@
 function calcularPromedio (numeros) {
     let sumaTotal = 0;
-    for (let i = 0; i <= numeros.length; i++) {
+    for (let i = 0; i < numeros.length; i++) {
         sumaTotal += numeros[i];
     }
     const promedio = sumaTotal / numeros.length;
